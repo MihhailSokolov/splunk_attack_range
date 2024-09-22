@@ -39,7 +39,11 @@ resource "aws_instance" "kali_machine" {
       private_key = file(var.aws.private_key_path)
     }
   }
-
+  root_block_device {
+    volume_type = "gp2"
+    volume_size = "50"
+    delete_on_termination = "true"
+  }
 }
 
 resource "aws_eip" "kali_ip" {
