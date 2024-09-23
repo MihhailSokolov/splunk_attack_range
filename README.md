@@ -29,8 +29,8 @@ The Attack Range Documentation can be found [here](https://attack-range.readthed
 Attack Range in AWS:
 
 ```
-docker pull splunk/attack_range
-docker run -it splunk/attack_range
+docker pull mihhailsokolov/purplesar
+docker run -it mihhailsokolov/purplesar
 aws configure
 python attack_range.py configure
 ```
@@ -53,7 +53,7 @@ The deployment of Attack Range consists of:
 - Zeek Server
 - Snort Server
 
-Which can be added/removed/configured using [attack_range.yml](https://github.com/splunk/attack_range/blob/develop/attack_range.yml). 
+Which can be added/removed/configured using [attack_range.yml](https://github.com/MihhailSokolov/PurpleSAR/blob/develop/attack_range.yml). 
 
 ## Logging
 The following log sources are collected from the machines:
