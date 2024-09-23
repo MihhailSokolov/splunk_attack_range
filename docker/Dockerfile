@@ -12,10 +12,10 @@ RUN curl -fsSL https://apt.releases.hashicorp.com/gpg | apt-key add -
 RUN apt-add-repository "deb https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 RUN apt update && apt install packer
 
-RUN git clone https://github.com/MihhailSokolov/splunk_attack_range.git
+RUN git clone https://github.com/MihhailSokolov/PurpleSAR.git
 RUN echo 'alias python=python3' >> ~/.bashrc
 
-WORKDIR /attack_range
+WORKDIR /PurpleSAR
 
 RUN cd terraform/aws && terraform init
 RUN cd terraform/azure && terraform init

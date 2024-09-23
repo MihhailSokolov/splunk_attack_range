@@ -1,0 +1,3 @@
+
+- include: populate.yml
+  when: windows_servers.create_domain == "1"
