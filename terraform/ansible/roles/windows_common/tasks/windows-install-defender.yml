@@ -1,0 +1,7 @@
+---
+
+- name: Install Windows Defender
+  win_shell: 'Install-WindowsFeature -name Windows-Defender'
+
+- name: reboot | Rebooting Server
+  win_reboot:
