@@ -513,46 +513,50 @@ starting configuration for AT-ST mech walker
         
         questions = [
             {
-                'type': 'confirm',
-                'message': 'shall we build another windows server',
-                'name': 'windows_server_three',
-                'default': False,
+                "type": "confirm",
+                "message": "shall we build another windows server",
+                "name": "windows_server_three",
+                "default": False,
             },
             {
-                'type': 'select',
-                'message': 'which version should it be',
-                'name': 'windows_server_three_version',
-                'choices': ['2016', '2019'],
-                'when': lambda answers: answers['windows_server_three'],
+                "type": "select",
+                "message": "which version should it be",
+                "name": "windows_server_three_version",
+                "choices": ["2016", "2019", "2022"],
+                "when": lambda answers: answers["windows_server_three"],
             },
             {
-                'type': 'confirm',
-                'message': 'should the windows server join the domain',
-                'name': 'windows_server_three_join_dc',
-                'default': False,
-                'when': lambda answers: answers['windows_server_three'] and 'create_domain' in configuration['windows_servers'][0],
+                "type": "confirm",
+                "message": "should the windows server join the domain",
+                "name": "windows_server_three_join_dc",
+                "default": False,
+                "when": lambda answers: answers["windows_server_three"]
+                and "create_domain" in configuration["windows_servers"][0],
             },
             {
-                'type': 'confirm',
-                'message': 'should we install red team tools on the windows server',
-                'name': 'windows_server_three_red_team_tools',
-                'default': False,
-                'when': lambda answers: answers['windows_server_three'],
+                "type": "confirm",
+                "message": "should we install red team tools on the windows server",
+                "name": "windows_server_three_red_team_tools",
+                "default": False,
+                "when": lambda answers: answers["windows_server_three"],
             },
         ]
 
         answers = questionary.prompt(questions)
 
-        if answers['windows_server_three']:
-            configuration['windows_servers'].append({
-                'hostname': 'ar-win-3',
-                'windows_image': 'windows-' + answers['windows_server_three_version'] + '-v' + VERSION.replace(".","-"),
-            })
-            if 'windows_server_three_join_dc' in answers:
-                if answers['windows_server_three_join_dc']:
-                    configuration['windows_servers'][2]['join_domain'] = '1'
-            if answers['windows_server_three_red_team_tools']:
-                configuration['windows_servers'][2]['install_red_team_tools'] = '1'
+        if answers["windows_server_three"]:
+            configuration["windows_servers"].append(
+                {
+                    "hostname": "ar-win-3",
+                    "windows_image": "windows-server-"
+                    + answers["windows_server_three_version"],
+                }
+            )
+            if "windows_server_three_join_dc" in answers:
+                if answers["windows_server_three_join_dc"]:
+                    configuration["windows_servers"][2]["join_domain"] = "1"
+            if answers["windows_server_three_red_team_tools"]:
+                configuration["windows_servers"][2]["install_red_team_tools"] = "1"
 
     questions = [
         {

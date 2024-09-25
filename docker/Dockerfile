@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive 
 
 RUN apt-get update && \
-        apt-get install -y python3.10 git unzip python3-pip awscli curl vim lsb-release software-properties-common
+        apt-get install -y python3.10 git unzip python3-pip awscli curl wget vim lsb-release software-properties-common nano
 
 RUN curl -s https://releases.hashicorp.com/terraform/1.4.5/terraform_1.4.5_linux_amd64.zip -o terraform.zip && \
          unzip terraform.zip && \
