@@ -19,7 +19,11 @@ WORKDIR /PurpleSAR
 
 RUN cd terraform/aws && terraform init
 RUN cd terraform/azure && terraform init
+RUN pip3 install poetry
+RUN poetry install 
 RUN pip3 install --upgrade awscli requests
 RUN pip3 install azure-cli
 
-CMD ["bash"]
+COPY docker-entrypoint.sh ./
+RUN chmod +x ./docker-entrypoint.sh
+CMD ["./docker-entrypoint.sh"]
