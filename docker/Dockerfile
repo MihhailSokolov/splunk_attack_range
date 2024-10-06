@@ -24,6 +24,6 @@ RUN poetry install
 RUN pip3 install --upgrade awscli requests
 RUN pip3 install azure-cli
 
-COPY docker-entrypoint.sh ./
-RUN chmod +x ./docker-entrypoint.sh
-CMD ["./docker-entrypoint.sh"]
+COPY entrypoint.sh ./
+RUN chmod +x ./entrypoint.sh
+CMD ["./entrypoint.sh"]
