@@ -8,8 +8,8 @@
 - name: Run join domain
   win_shell: "C:\\populate.ps1 attackrange.local 20 {{ ansible_user }}@attackrange.local {{ general.attack_range_password }}"
   register: win_shell_output
-  retries: 20
-  delay: 60
+  retries: 3
+  delay: 600
   until: win_shell_output.stderr == ""
 
 - debug:
