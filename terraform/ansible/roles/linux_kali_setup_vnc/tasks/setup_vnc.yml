@@ -1,0 +1,40 @@
+---
+
+- name: install kali-linux-headless
+  become: true
+  apt:
+    name:  kali-linux-headless 
+    state: latest
+    update_cache: yes
+
+- name: install kali-desktop-xfce
+  become: true
+  apt:
+    name:  kali-desktop-xfce
+    state: latest
+    update_cache: yes
+
+- name: install tigervnc-standalone-server
+  become: true
+  apt:
+    name:  tigervnc-standalone-server
+    state: latest
+    update_cache: yes
+
+- name: Create folder directory for .vnc
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+  with_items:
+    - /home/kali/.vnc
+
+- name: copy xstartup to .vnc
+  copy:
+    src: vnc_xstartup
+    dest: /home/kali/.vnc/xstartup
+    force: yes
+
+- name: start vncserver
+  become: true
+  ansible.builtin.shell: chmod 777 /home/kali/.vnc/xstartup && vncserver -SecurityTypes=none --I-KNOW-THIS-IS-INSECURE -localhost no :1

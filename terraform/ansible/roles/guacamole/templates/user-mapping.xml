@@ -82,7 +82,14 @@
             {% elif general.cloud_provider == 'azure' %}
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
-        </connection>    
+        </connection>
+        <connection name="ar-kali-{{ general.key_name }}-{{ general.attack_range_name }}-vnc">
+            <protocol>vnc</protocol>
+            <param name="hostname">10.0.1.30</param>
+            <param name="port">5901</param>
+            <param name="username">kali</param>
+            <param name="password">{{ general.attack_range_password }}</param>
+        </connection>
         {% endif %}
 
         {% if zeek_server.zeek_server == '1' %}
