@@ -117,24 +117,24 @@ Add-ADGroupMember -Identity $serverAdminsGroup -Members $(Get-ADUser "billh")
 $adDrive = New-PSDrive -Name DomainAD -PSProvider ActiveDirectory -Server $domainController -root "//RootDSE/" -Credential $credential
 
 $path = "$($adDrive.Name):\$($itSupportGroup.DistinguishedName)"
-$acl = Get-Acl $path -Credential $credential
+$acl = Get-Acl $path
 $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($serverAdminsGroup.sid, "GenericWrite", "Allow")
 $acl.AddAccessRule($accessrule)
-Set-Acl -AclObject $acl -Path $path -Credential $credential
+Set-Acl -AclObject $acl -Path
 
 ForEach ($user in $users) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
-    $acl = Get-Acl $path -Credential $credential
+    $acl = Get-Acl $path
     $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
-    Set-Acl -AclObject $acl -Path $path -Credential $credential
+    Set-Acl -AclObject $acl -Path $path
 }
 ForEach ($user in $(Get-ADGroupMember "Domain Admins" -Credential $credential)) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
-    $acl = Get-Acl $path -Credential $credential
+    $acl = Get-Acl $path
     $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
-    Set-Acl -AclObject $acl -Path $path -Credential $credential
+    Set-Acl -AclObject $acl -Path $path
 }
 
 Write-Host "Finished - login with one of the users from ServerAdmins group on the server to be compromised"
