@@ -125,14 +125,14 @@ Set-Acl -AclObject $acl -Path
 ForEach ($user in $users) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
     $acl = Get-Acl $path
-    $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup, "ExtendedRight", "Allow")
+    $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
     Set-Acl -AclObject $acl -Path $path
 }
 ForEach ($user in $(Get-ADGroupMember "Domain Admins" -Credential $credential)) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
     $acl = Get-Acl $path
-    $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup, "ExtendedRight", "Allow")
+    $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
     Set-Acl -AclObject $acl -Path $path
 }
