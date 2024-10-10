@@ -120,7 +120,7 @@ $path = "$($adDrive.Name):\$($itSupportGroup.DistinguishedName)"
 $acl = Get-Acl $path
 $accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($serverAdminsGroup.sid, "GenericWrite", "Allow")
 $acl.AddAccessRule($accessrule)
-Set-Acl -AclObject $acl -Path
+Set-Acl -AclObject $acl -Path $path
 
 ForEach ($user in $users) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
