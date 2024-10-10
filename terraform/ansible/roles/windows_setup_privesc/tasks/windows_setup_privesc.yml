@@ -1,0 +1,21 @@
+---
+
+- name: Copy setup privesc script to host
+  win_copy:
+    src: "setup_privesc.ps1"
+    dest: 'C:\temp\setup_privesc.ps1'
+
+- name: Run setup privesc
+  win_shell: "C:\\temp\\setup_privesc.ps1 {{ ansible_user }} {{ general.attack_range_password }}"
+  register: win_shell_output
+  retries: 5
+  delay: 60
+  until: win_shell_output.stderr == ""
+
+- name: Remove script file
+  ansible.windows.win_file:
+    path: C:\temp\setup_privesc.ps1
+    state: absent
+
+- debug:
+    var: win_shell_output

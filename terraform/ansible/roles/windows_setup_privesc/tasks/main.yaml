@@ -1,0 +1,3 @@
+
+- include: windows_setup_privesc.yml
+  when: "'WIN-1' in inventory_hostname"
