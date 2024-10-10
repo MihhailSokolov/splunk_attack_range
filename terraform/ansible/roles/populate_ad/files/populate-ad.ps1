@@ -112,27 +112,27 @@ Write-Host "Adding privilege escalation path..."
 
 New-ADUser -Server $domainController -Name "billh" -GivenName "Bill" -Surname "Hardman" -SamAccountName "billh" -DisplayName "billh" -UserPrincipalName "$billh@$domain" -Path "OU=IT,OU=Employees,$rootPath" -AccountPassword (ConvertTo-SecureString -AsPlainText "PurpleSAR2024!" -Force) -EmailAddress "bill.hardman@$domain" -Enabled $true -Credential $credential
 Start-Sleep -Seconds 3
-Add-ADGroupMember -Identity $serverAdminsGroup -Members $(Get-ADUser "billh")
+Add-ADGroupMember -Identity $serverAdminsGroup -Members $(Get-ADUser "billh") -Credential $credential
 
 $adDrive = New-PSDrive -Name DomainAD -PSProvider ActiveDirectory -Server $domainController -root "//RootDSE/" -Credential $credential
 
 $path = "$($adDrive.Name):\$($itSupportGroup.DistinguishedName)"
 $acl = Get-Acl $path
-$accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($serverAdminsGroup.sid, "GenericWrite", "Allow")
+$accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($serverAdminsGroup.sid, "GenericWrite", "Allow")
 $acl.AddAccessRule($accessrule)
 Set-Acl -AclObject $acl -Path
 
 ForEach ($user in $users) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
     $acl = Get-Acl $path
-    $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
+    $accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
     Set-Acl -AclObject $acl -Path $path
 }
 ForEach ($user in $(Get-ADGroupMember "Domain Admins" -Credential $credential)) {
     $path = "$($adDrive.Name):\$($user.DistinguishedName)"
     $acl = Get-Acl $path
-    $accessrule = New-Object System.DirectoryServices.ActiceDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
+    $accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
     Set-Acl -AclObject $acl -Path $path
 }
