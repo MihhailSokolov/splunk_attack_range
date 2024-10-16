@@ -1,6 +1,10 @@
 $user = $args[0]
 $password = $args[1]
 
+if (-not $env:computername.Contains("WIN-2")) {
+    exit
+}
+
 net user PurpleUser SecurePwd123 /add
 net localgroup "Remote Desktop Users" PurpleUser /add
 
