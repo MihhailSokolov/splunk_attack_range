@@ -1,7 +1,7 @@
 $user = $args[0]
 $password = $args[1]
 
-if (-not $env:computername.Contains("WIN-2")) {
+if (-not $env:computername.ToLower().Contains("win-2")) {
     exit
 }
 
