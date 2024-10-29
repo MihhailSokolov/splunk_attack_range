@@ -39,6 +39,25 @@ resource "aws_instance" "kali_machine" {
       private_key = file(var.aws.private_key_path)
     }
   }
+
+  provisioner "local-exec" {
+    working_dir = "../ansible"
+    command = <<-EOT
+      cat <<EOF > vars/kali_vars.json
+      {
+        "general": ${jsonencode(var.general)},
+        "aws": ${jsonencode(var.aws)},
+        "kali_server": ${jsonencode(var.kali_server)}
+      }
+      EOF
+    EOT
+  }
+
+  provisioner "local-exec" {
+    working_dir = "../ansible"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u kali --private-key '${var.aws.private_key_path}' -i '${self.public_ip},' kali_server.yml -e @vars/kali_vars.json"
+  }
+
   root_block_device {
     volume_type = "gp2"
     volume_size = "50"
