@@ -1,5 +1,9 @@
 ---
 
+- name: add RSA to allowed SSH keys
+  become: true
+  ansible.builtin.shell: 'PubkeyAcceptedKeyTypes=+ssh-rsa' >> /etc/ssh/sshd_config && systemctl restart sshd
+
 - name: install kali-linux-headless
   become: true
   apt:
