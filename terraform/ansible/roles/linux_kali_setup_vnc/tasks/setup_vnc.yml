@@ -39,6 +39,31 @@
     dest: /home/kali/.vnc/xstartup
     force: yes
 
-- name: start vncserver
+- name: copy etc_tigervnc_vncserver.users to etc
+  copy:
+    src: etc_tigervnc_vncserver.users
+    dest: /etc/tigervnc/vncserver.users
+    force: yes
+
+- name: copy tigervnc.conf to .vnc
+  copy:
+    src: vnc_tigervnc.conf
+    dest: /home/kali/.vnc/tigervnc.conf
+    force: yes
+
+- name: set vnc passwd
   become: true
-  ansible.builtin.shell: chmod 777 /home/kali/.vnc/xstartup && vncserver -SecurityTypes=none --I-KNOW-THIS-IS-INSECURE -localhost no :1
+  ansible.builtin.shell: echo 'PurpleP0wer!' | vncpasswd -f > /home/kali/.vnc/passwd
+
+- name: fix .vnc permissions
+  become: true
+  ansible.builtin.shell: chown -R kali:kali /home/kali/.vnc && chmod 700 /home/kali/.vnc/xstartup
+
+- name: create and enable systemd vnc service
+  become: true
+  ansible.builtin.shell: cp /usr/lib/systemd/system/tigervncserver@.service /etc/systemd/system/tigervncserver@:1.service && systemctl enable tigervncserver@:1.service
+
+- name: start systemd vnc service
+  become: true
+  ansible.builtin.shell: systemctl start tigervncserver@:1.service
+
