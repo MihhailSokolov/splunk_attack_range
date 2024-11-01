@@ -1,8 +1,18 @@
 ---
 
-- name: add RSA to allowed SSH keys
+- name: Configure sshd
+  lineinfile:
+    path: "/etc/ssh/sshd_config"
+    line: "{{item.key}} {{item.value}}"
+  loop:
+    - { key: "HostKeyAlgorithms", value: "+ssh-rsa" }
+    - { key: "PubkeyAcceptedKeyTypes", value: "+ssh-rsa" }
+
+- name: Restart SSHd
   become: true
-  ansible.builtin.shell: 'echo "PubkeyAcceptedKeyTypes=+ssh-rsa" >> /etc/ssh/sshd_config && systemctl restart sshd'
+  service:
+    name: sshd
+    state: restarted
 
 - name: install kali-linux-headless
   become: true
