@@ -35,6 +35,13 @@
     state: latest
     update_cache: yes
 
+- name: install freerdp2-x11
+  become: true
+  apt:
+    name:  freerdp2-x11
+    state: latest
+    update_cache: yes
+
 - name: Create folder directory for .vnc
   file:
     path: "{{ item }}"
