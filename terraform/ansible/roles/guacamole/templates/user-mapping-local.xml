@@ -1,6 +1,6 @@
 <user-mapping>
     <authorize 
-            username="Admin"
+            username="admin"
             password="{{general.attack_range_password|hash('md5')}}"
             encoding="md5">
 
