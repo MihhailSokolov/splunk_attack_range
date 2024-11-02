@@ -98,12 +98,12 @@ ForEach ($computer in $existingComputers) {
 
 For ($i=1; $i -le $users.Length; $i++) {
     $computerName = "CLIENT-WIN-$($i + 1)"
-    New-ADComputer -Name $computerName -SamAccountName $computerName -Path "OU=Clients,OU=Systems,$rootPath" -ManagedBy $itSupportGroup -Credential $credential
+    New-ADComputer -Name $computerName -SamAccountName $computerName -Path "OU=Clients,OU=Systems,$rootPath" -Credential $credential
 }
 
 For ($i=1; $i -le ($users.Length / 5); $i++) {
     $computerName = "SERVER-WIN-$i"
-    New-ADComputer -Name $computerName -SamAccountName $computerName -Path "OU=Servers,OU=Systems,$rootPath" -ManagedBy $serverAdminsGroup -Credential $credential
+    New-ADComputer -Name $computerName -SamAccountName $computerName -Path "OU=Servers,OU=Systems,$rootPath" -Credential $credential
 }
 
 Start-Sleep -Seconds 10
@@ -129,12 +129,17 @@ ForEach ($user in $users) {
     $acl.AddAccessRule($accessrule)
     Set-Acl -AclObject $acl -Path $path
 }
-ForEach ($user in $(Get-ADGroupMember "Domain Admins" -Credential $credential)) {
-    $path = "$($adDrive.Name):\$($user.DistinguishedName)"
+ForEach ($user in $(Get-ADGroup "Domain Admins" -Credential $credential -Properties members | select -expand members)) {
+    $path = "$($adDrive.Name):\$user"
     $acl = Get-Acl $path
     $accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($itSupportGroup.sid, "ExtendedRight", "Allow")
     $acl.AddAccessRule($accessrule)
     Set-Acl -AclObject $acl -Path $path
 }
+$path = "$($adDrive.Name):\$(Get-ADUser Administrator -Credential $credential | select -expand DistinguishedName)"
+$acl = Get-Acl $path
+$accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($(Get-ADGroup ITSupport).sid, "ExtendedRight", "Allow")
+$acl.AddAccessRule($accessrule)
+Set-Acl -AclObject $acl -Path $path
 
 Write-Host "Finished - login with one of the users from ServerAdmins group on the server to be compromised"
