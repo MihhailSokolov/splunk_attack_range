@@ -63,7 +63,7 @@
 
 - name: set vnc passwd
   become: true
-  ansible.builtin.shell: echo {{ general.attack_range_password }} | vncpasswd -f > /home/kali/.vnc/passwd
+  ansible.builtin.shell: echo {{ general.attack_range_password }} | vncpasswd -f > /home/kali/.vnc/passwd && chmod 600 /home/kali/.vnc/passwd
 
 - name: fix .vnc permissions
   become: true
