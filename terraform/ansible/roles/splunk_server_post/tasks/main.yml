@@ -20,3 +20,5 @@
 
 - include: install_dltk.yml
   when: splunk_server.install_dltk == "1"
+
+- include: install_savedsearches.yml
