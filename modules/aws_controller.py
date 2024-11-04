@@ -206,7 +206,7 @@ class AwsController(AttackRangeController):
                         "\nAccess Guacamole via:\n\tWeb > http://"
                         + instance["NetworkInterfaces"][0]["Association"]["PublicIp"]
                         + ":8080/guacamole"
-                        + "\n\tusername: Admin \n\tpassword: "
+                        + "\n\tusername: admin \n\tpassword: "
                         + self.config["general"]["attack_range_password"]
                     )
                     if self.config["splunk_server"]["install_es"] == "1":
