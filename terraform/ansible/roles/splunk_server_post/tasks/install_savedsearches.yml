@@ -1,12 +1,12 @@
 - name: Copy savedsearches.conf
   copy:
     src: SplunkEnterpriseSecuritySuite_savedsearches.conf
-    dest: /opt/splunk/etc/apps/SplunkEnterpriseSecuritySuite/savedsearches.conf
+    dest: /opt/splunk/etc/apps/SplunkEnterpriseSecuritySuite/local/savedsearches.conf
     force: yes
 
 - name: Change savedsearches.conf ownership, group and permissions
   file:
-    path: /opt/splunk/etc/apps/SplunkEnterpriseSecuritySuite/savedsearches.conf
+    path: /opt/splunk/etc/apps/SplunkEnterpriseSecuritySuite/local/savedsearches.conf
     owner: root
     group: root
     mode: '0600'
