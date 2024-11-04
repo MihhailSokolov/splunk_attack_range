@@ -21,3 +21,4 @@
 - include: configure_props.yml
 - include: configure_cim.yml
 - include: configure_phantom.yml
+- include: install_savedsearches.yml
