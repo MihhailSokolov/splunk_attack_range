@@ -1,11 +1,11 @@
 ---
 
-- name: Copy join domain script to host
+- name: Copy populate script to host
   win_copy:
     src: "populate-ad.ps1"
     dest: 'C:\temp\populate.ps1'
 
-- name: Run join domain
+- name: Run populate script
   win_shell: "C:\\temp\\populate.ps1 attackrange.local 20 {{ ansible_user }}@attackrange.local {{ general.attack_range_password }}"
   register: win_shell_output
   retries: 3
