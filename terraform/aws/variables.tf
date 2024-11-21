@@ -46,7 +46,7 @@ variable "windows_servers" {
     {
         hostname = "ar-win"
         image = "windows-2016-2-0-0"
-        win_sysmon_config = "SwiftOnSecurity.xml"
+        win_sysmon_config = "AttackRangeSysmon.xml"
         create_domain = "0"
         join_domain = "0"
         install_red_team_tools = "0"
