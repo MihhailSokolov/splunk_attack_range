@@ -10,9 +10,9 @@
     - linux_common
     - splunk_server
     - splunk_server_post
-    - phantom_byo_splunk
-    - cloudtrail_logs
-    - azure_logging
-    - carbon_black_cloud_logs
-    - crowdstrike_falcon_logging
+      #    - phantom_byo_splunk
+      #    - cloudtrail_logs
+      #    - azure_logging
+      #    - carbon_black_cloud_logs
+      #    - crowdstrike_falcon_logging
     - guacamole
