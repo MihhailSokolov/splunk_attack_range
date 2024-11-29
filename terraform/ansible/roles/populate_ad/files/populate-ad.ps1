@@ -1,8 +1,8 @@
 $domain = $args[0]
 $numberOfUsers = $args[1]
 $username = $args[2]
-$password = $args[3] | ConvertTo-SecureString -asPlainText -Force
-$credential = New-Object System.Management.Automation.PSCredential($username,$password)
+$userpwd = $args[3]
+$credential = New-Object System.Management.Automation.PSCredential($username,$($userpwd | ConvertTo-SecureString -asPlainText -Force))
 
 $domainController = $(Get-ADDomainController -server $domain -Credential $credential).HostName
 $rootPath = $(($domain.ToLower().Split(".") | % { "DC=" + $_}) -Join ',')
@@ -141,5 +141,10 @@ $acl = Get-Acl $path
 $accessrule = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($(Get-ADGroup ITSupport).sid, "ExtendedRight", "Allow")
 $acl.AddAccessRule($accessrule)
 Set-Acl -AclObject $acl -Path $path
+
+$action = New-ScheduledTaskAction -Execute "powershell" -Argument "-WindowStyle Hidden -File C:\Windows\Temp\set-da-dacl.ps1 $domain $username $userpwd"
+$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date -RepetitionInterval (New-TimeSpan -Minutes 1)
+$settings = New-ScheduledTaskSettingsSet
+Register-ScheduledTask -TaskName SetDADacl -TaskPath "\" -Action $action -Trigger $trigger -User $username -Password $userpwd -Settings $settings
 
 Write-Host "Finished - login with one of the users from ServerAdmins group on the server to be compromised"
