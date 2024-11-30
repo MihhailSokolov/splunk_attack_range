@@ -3,10 +3,10 @@
 - name: Copy setup privesc script to host
   win_copy:
     src: "setup_privesc.ps1"
-    dest: 'C:\temp\setup_privesc.ps1'
+    dest: 'C:\Windows\Temp\setup_privesc.ps1'
 
 - name: Run setup privesc
-  win_shell: "C:\\temp\\setup_privesc.ps1 {{ ansible_user }} {{ general.attack_range_password }}"
+  win_shell: "C:\\Windows\\Temp\\setup_privesc.ps1 {{ ansible_user }} {{ general.attack_range_password }}"
   register: win_shell_output
   retries: 5
   delay: 300

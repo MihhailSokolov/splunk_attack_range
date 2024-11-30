@@ -1,0 +1,6 @@
+---
+
+- name: Copy finance db to host
+  win_copy:
+    src: "finance.db"
+    dest: 'C:\Users\Administrator\Documents\finance.db'
