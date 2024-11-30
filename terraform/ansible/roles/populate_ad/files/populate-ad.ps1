@@ -1,3 +1,5 @@
+Start-Sleep -Seconds 300
+
 $domain = $args[0]
 $numberOfUsers = $args[1]
 $username = $args[2]

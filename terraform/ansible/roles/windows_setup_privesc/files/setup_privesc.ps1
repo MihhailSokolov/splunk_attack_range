@@ -1,7 +1,7 @@
 if (-not $env:computername.ToLower().Contains("itserver")) {
     exit
 }
-
+Start-Sleep -Seconds 360
 $user = $args[0]
 $password = $args[1]
 
