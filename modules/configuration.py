@@ -657,7 +657,7 @@ starting configuration for AT-ST mech walker
         {
             "hostname": "ITSERVER",
             "windows_image": "windows-server-2019",
-            "create_domain": "1"
+            "join_domain": "1"
         }
     )
     configuration["windows_servers"].append(
