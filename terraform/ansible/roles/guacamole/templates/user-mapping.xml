@@ -30,7 +30,7 @@
         </connection>    
         {% endif %}
         
-        {% if windows_servers is string %}
+        <!-- {% if windows_servers is string %}
             {% set windows_servers_list = windows_servers|from_json %}
         {% else %}
             {% set windows_servers_list = windows_servers %}
@@ -50,7 +50,39 @@
             <param name="enable-drive">true</param>
             <param name="drive-path">/home/ubuntu/shared-folder</param>
         </connection>
-        {% endfor %}
+        {% endfor %} -->
+
+        <connection name="DC-RDP">
+            <protocol>rdp</protocol>
+            <param name="hostname">10.0.1.14</param>
+            <param name="port">3389</param>
+            <param name="username">Administrator</param>
+            <param name="password">{{general.attack_range_password}}</param>
+            <param name="ignore-cert">true</param>
+            <param name="enable-drive">true</param>
+            <param name="drive-path">/home/ubuntu/shared-folder</param>
+        </connection>
+        <connection name="ITSERVER-RDP">
+            <protocol>rdp</protocol>
+            <param name="hostname">10.0.1.15</param>
+            <param name="port">3389</param>
+            <param name="username">Administrator</param>
+            <param name="password">{{general.attack_range_password}}</param>
+            <param name="ignore-cert">true</param>
+            <param name="enable-drive">true</param>
+            <param name="drive-path">/home/ubuntu/shared-folder</param>
+        </connection>
+        <connection name="FINSERVER-RDP">
+            <protocol>rdp</protocol>
+            <param name="hostname">10.0.1.16</param>
+            <param name="port">3389</param>
+            <param name="username">Administrator</param>
+            <param name="password">{{general.attack_range_password}}</param>
+            <param name="ignore-cert">true</param>
+            <param name="enable-drive">true</param>
+            <param name="drive-path">/home/ubuntu/shared-folder</param>
+        </connection>
+
 
         {% if linux_servers is string %}
             {% set linux_servers_list = linux_servers|from_json %}
@@ -72,7 +104,7 @@
         {% endfor %}
 
         {% if kali_server.kali_server == '1' %}
-        <connection name="ar-kali-{{ general.key_name }}-{{ general.attack_range_name }}">
+        <connection name="KALI-SSH">
             <protocol>ssh</protocol>
             <param name="hostname">10.0.1.30</param>
             <param name="port">22</param>
@@ -83,7 +115,7 @@
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
         </connection>
-        <connection name="ar-kali-{{ general.key_name }}-{{ general.attack_range_name }}-vnc">
+        <connection name="KALI-VNC"
             <protocol>vnc</protocol>
             <param name="hostname">10.0.1.30</param>
             <param name="port">5901</param>

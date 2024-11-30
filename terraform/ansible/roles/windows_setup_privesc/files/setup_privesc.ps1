@@ -1,4 +1,4 @@
-if (-not $env:computername.ToLower().Contains("win-2")) {
+if (-not $env:computername.ToLower().Contains("itserver")) {
     exit
 }
 

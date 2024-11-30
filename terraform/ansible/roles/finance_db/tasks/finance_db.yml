@@ -4,3 +4,18 @@
   win_copy:
     src: "finance.db"
     dest: 'C:\Users\Administrator\Documents\finance.db'
+
+- name: Copy findb_host_check script to host
+  win_copy:
+    src: "findb_host_check.ps1"
+    dest: 'C:\Windows\Temp\findb_host_check.ps1'
+
+- name: Run findb_host_check
+  win_shell: "C:\\Windows\\Temp\\findb_host_check.ps1"
+  register: win_shell_output
+  retries: 5
+  delay: 300
+  until: win_shell_output.stderr == ""
+
+- debug:
+    var: win_shell_output

@@ -406,240 +406,270 @@ starting configuration for AT-ST mech walker
 
     print("> configuring attack_range environment")
 
-    questions = [
-        {
-            "type": "confirm",
-            "message": "shall we build a windows server",
-            "name": "windows_server_one",
-            "default": True,
-        },
-        {
-            "type": "select",
-            "message": "which version should it be",
-            "name": "windows_server_one_version",
-            "choices": ["2016", "2019", "2022"],
-            "when": lambda answers: answers["windows_server_one"],
-        },
-        {
-            "type": "confirm",
-            "message": "should the windows server be a domain controller",
-            "name": "windows_server_one_dc",
-            "default": False,
-            "when": lambda answers: answers["windows_server_one"],
-        },
-        {
-            "type": "confirm",
-            "message": "should we install red team tools on the windows server",
-            "name": "windows_server_one_red_team_tools",
-            "default": False,
-            "when": lambda answers: answers["windows_server_one"],
-        },
-        {
-            "type": "confirm",
-            "message": "should we install badblood on the windows server, which will populate the domain with objects",
-            "name": "windows_server_one_bad_blood",
-            "default": False,
-            "when": lambda answers: answers["windows_server_one"]
-            and answers["windows_server_one_dc"],
-        },
-    ]
+    # questions = [
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we build a windows server",
+    #         "name": "windows_server_one",
+    #         "default": True,
+    #     },
+    #     {
+    #         "type": "select",
+    #         "message": "which version should it be",
+    #         "name": "windows_server_one_version",
+    #         "choices": ["2016", "2019", "2022"],
+    #         "when": lambda answers: answers["windows_server_one"],
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "should the windows server be a domain controller",
+    #         "name": "windows_server_one_dc",
+    #         "default": False,
+    #         "when": lambda answers: answers["windows_server_one"],
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "should we install red team tools on the windows server",
+    #         "name": "windows_server_one_red_team_tools",
+    #         "default": False,
+    #         "when": lambda answers: answers["windows_server_one"],
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "should we install badblood on the windows server, which will populate the domain with objects",
+    #         "name": "windows_server_one_bad_blood",
+    #         "default": False,
+    #         "when": lambda answers: answers["windows_server_one"]
+    #         and answers["windows_server_one_dc"],
+    #     },
+    # ]
 
-    answers = questionary.prompt(questions)
+    # answers = questionary.prompt(questions)
 
-    if answers["windows_server_one"]:
-        configuration["windows_servers"] = list()
-        configuration["windows_servers"].append(
-            {
-                "hostname": "ar-win-1",
-                "windows_image": "windows-server-"
-                + answers["windows_server_one_version"],
-            }
-        )
-        if answers["windows_server_one_dc"]:
-            configuration["windows_servers"][0]["create_domain"] = "1"
-            configuration["windows_servers"][0]["hostname"] = "ar-win-dc"
-        if answers["windows_server_one_red_team_tools"]:
-            configuration["windows_servers"][0]["install_red_team_tools"] = "1"
-        if "windows_server_one_bad_blood" in answers:
-            if answers["windows_server_one_bad_blood"]:
-                configuration["windows_servers"][0]["bad_blood"] = "1"
+    # if answers["windows_server_one"]:
+    #     configuration["windows_servers"] = list()
+    #     configuration["windows_servers"].append(
+    #         {
+    #             "hostname": "ar-win-1",
+    #             "windows_image": "windows-server-"
+    #             + answers["windows_server_one_version"],
+    #         }
+    #     )
+    #     if answers["windows_server_one_dc"]:
+    #         configuration["windows_servers"][0]["create_domain"] = "1"
+    #         configuration["windows_servers"][0]["hostname"] = "ar-win-dc"
+    #     if answers["windows_server_one_red_team_tools"]:
+    #         configuration["windows_servers"][0]["install_red_team_tools"] = "1"
+    #     if "windows_server_one_bad_blood" in answers:
+    #         if answers["windows_server_one_bad_blood"]:
+    #             configuration["windows_servers"][0]["bad_blood"] = "1"
 
-        questions = [
-            {
-                "type": "confirm",
-                "message": "shall we build another windows server",
-                "name": "windows_server_two",
-                "default": False,
-            },
-            {
-                "type": "select",
-                "message": "which version should it be",
-                "name": "windows_server_two_version",
-                "choices": ["2016", "2019", "2022"],
-                "when": lambda answers: answers["windows_server_two"],
-            },
-            {
-                "type": "confirm",
-                "message": "should the windows server join the domain",
-                "name": "windows_server_two_join_dc",
-                "default": False,
-                "when": lambda answers: answers["windows_server_two"]
-                and "create_domain" in configuration["windows_servers"][0],
-            },
-            {
-                "type": "confirm",
-                "message": "should we install red team tools on the windows server",
-                "name": "windows_server_two_red_team_tools",
-                "default": False,
-                "when": lambda answers: answers["windows_server_two"],
-            },
-        ]
+    #     questions = [
+    #         {
+    #             "type": "confirm",
+    #             "message": "shall we build another windows server",
+    #             "name": "windows_server_two",
+    #             "default": False,
+    #         },
+    #         {
+    #             "type": "select",
+    #             "message": "which version should it be",
+    #             "name": "windows_server_two_version",
+    #             "choices": ["2016", "2019", "2022"],
+    #             "when": lambda answers: answers["windows_server_two"],
+    #         },
+    #         {
+    #             "type": "confirm",
+    #             "message": "should the windows server join the domain",
+    #             "name": "windows_server_two_join_dc",
+    #             "default": False,
+    #             "when": lambda answers: answers["windows_server_two"]
+    #             and "create_domain" in configuration["windows_servers"][0],
+    #         },
+    #         {
+    #             "type": "confirm",
+    #             "message": "should we install red team tools on the windows server",
+    #             "name": "windows_server_two_red_team_tools",
+    #             "default": False,
+    #             "when": lambda answers: answers["windows_server_two"],
+    #         },
+    #     ]
 
-        answers = questionary.prompt(questions)
+    #     answers = questionary.prompt(questions)
 
-        if answers["windows_server_two"]:
-            configuration["windows_servers"].append(
-                {
-                    "hostname": "ar-win-2",
-                    "windows_image": "windows-server-"
-                    + answers["windows_server_two_version"],
-                }
-            )
-            if "windows_server_two_join_dc" in answers:
-                if answers["windows_server_two_join_dc"]:
-                    configuration["windows_servers"][1]["join_domain"] = "1"
-            if answers["windows_server_two_red_team_tools"]:
-                configuration["windows_servers"][1]["install_red_team_tools"] = "1"
+    #     if answers["windows_server_two"]:
+    #         configuration["windows_servers"].append(
+    #             {
+    #                 "hostname": "ar-win-2",
+    #                 "windows_image": "windows-server-"
+    #                 + answers["windows_server_two_version"],
+    #             }
+    #         )
+    #         if "windows_server_two_join_dc" in answers:
+    #             if answers["windows_server_two_join_dc"]:
+    #                 configuration["windows_servers"][1]["join_domain"] = "1"
+    #         if answers["windows_server_two_red_team_tools"]:
+    #             configuration["windows_servers"][1]["install_red_team_tools"] = "1"
         
-        questions = [
-            {
-                "type": "confirm",
-                "message": "shall we build another windows server",
-                "name": "windows_server_three",
-                "default": False,
-            },
-            {
-                "type": "select",
-                "message": "which version should it be",
-                "name": "windows_server_three_version",
-                "choices": ["2016", "2019", "2022"],
-                "when": lambda answers: answers["windows_server_three"],
-            },
-            {
-                "type": "confirm",
-                "message": "should the windows server join the domain",
-                "name": "windows_server_three_join_dc",
-                "default": False,
-                "when": lambda answers: answers["windows_server_three"]
-                and "create_domain" in configuration["windows_servers"][0],
-            },
-            {
-                "type": "confirm",
-                "message": "should we install red team tools on the windows server",
-                "name": "windows_server_three_red_team_tools",
-                "default": False,
-                "when": lambda answers: answers["windows_server_three"],
-            },
-        ]
+    #     questions = [
+    #         {
+    #             "type": "confirm",
+    #             "message": "shall we build another windows server",
+    #             "name": "windows_server_three",
+    #             "default": False,
+    #         },
+    #         {
+    #             "type": "select",
+    #             "message": "which version should it be",
+    #             "name": "windows_server_three_version",
+    #             "choices": ["2016", "2019", "2022"],
+    #             "when": lambda answers: answers["windows_server_three"],
+    #         },
+    #         {
+    #             "type": "confirm",
+    #             "message": "should the windows server join the domain",
+    #             "name": "windows_server_three_join_dc",
+    #             "default": False,
+    #             "when": lambda answers: answers["windows_server_three"]
+    #             and "create_domain" in configuration["windows_servers"][0],
+    #         },
+    #         {
+    #             "type": "confirm",
+    #             "message": "should we install red team tools on the windows server",
+    #             "name": "windows_server_three_red_team_tools",
+    #             "default": False,
+    #             "when": lambda answers: answers["windows_server_three"],
+    #         },
+    #     ]
 
-        answers = questionary.prompt(questions)
+    #     answers = questionary.prompt(questions)
 
-        if answers["windows_server_three"]:
-            configuration["windows_servers"].append(
-                {
-                    "hostname": "ar-win-3",
-                    "windows_image": "windows-server-"
-                    + answers["windows_server_three_version"],
-                }
-            )
-            if "windows_server_three_join_dc" in answers:
-                if answers["windows_server_three_join_dc"]:
-                    configuration["windows_servers"][2]["join_domain"] = "1"
-            if answers["windows_server_three_red_team_tools"]:
-                configuration["windows_servers"][2]["install_red_team_tools"] = "1"
+    #     if answers["windows_server_three"]:
+    #         configuration["windows_servers"].append(
+    #             {
+    #                 "hostname": "ar-win-3",
+    #                 "windows_image": "windows-server-"
+    #                 + answers["windows_server_three_version"],
+    #             }
+    #         )
+    #         if "windows_server_three_join_dc" in answers:
+    #             if answers["windows_server_three_join_dc"]:
+    #                 configuration["windows_servers"][2]["join_domain"] = "1"
+    #         if answers["windows_server_three_red_team_tools"]:
+    #             configuration["windows_servers"][2]["install_red_team_tools"] = "1"
 
-    questions = [
+    # questions = [
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we build a linux server",
+    #         "name": "linux_server",
+    #         "default": False,
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we build a kali linux machine",
+    #         "name": "kali_machine",
+    #         "default": False,
+    #         "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we build nginx plus web proxy",
+    #         "name": "nginx_web_proxy",
+    #         "default": False,
+    #         "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we build zeek server",
+    #         "name": "zeek_server",
+    #         "default": False,
+    #         "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we build snort server",
+    #         "name": "snort_server",
+    #         "default": False,
+    #         "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
+    #     },
+    #     {
+    #         "type": "confirm",
+    #         "message": "shall we include Splunk SOAR",
+    #         "name": "phantom",
+    #         "default": False,
+    #     },
+    #     {
+    #         "type": "text",
+    #         "message": "Download the Splunk SOAR unpriv installer and save it in the apps folder. What is the name of the file?",
+    #         "name": "phantom_installer",
+    #         "when": lambda answers: answers["phantom"],
+    #     },
+    # ]
+
+    # answers = questionary.prompt(questions)
+
+    # if answers["linux_server"]:
+    #     configuration["linux_servers"] = list()
+    #     configuration["linux_servers"].append(
+    #         {
+    #             "hostname": "ar-linux",
+    #         }
+    #     )
+
+    # if configuration["general"]["cloud_provider"] == "aws":
+    #     if answers["kali_machine"]:
+    #         configuration["kali_server"] = dict()
+    #         configuration["kali_server"]["kali_server"] = "1"
+
+    #     if answers["nginx_web_proxy"]:
+    #         configuration["nginx_server"] = dict()
+    #         configuration["nginx_server"]["nginx_server"] = "1"
+
+    #     if answers["zeek_server"]:
+    #         configuration["zeek_server"] = dict()
+    #         configuration["zeek_server"]["zeek_server"] = "1"
+
+    #     if answers["snort_server"]:
+    #         configuration["snort_server"] = dict()
+    #         configuration["snort_server"]["snort_server"] = "1"
+
+    # if answers["phantom"]:
+    #     configuration["phantom_server"] = dict()
+    #     configuration["phantom_server"]["phantom_server"] = "1"
+
+    # if "phantom_installer" in answers:
+    #     configuration["phantom_server"]["phantom_app"] = answers["phantom_installer"]
+
+    configuration["splunk_server"] = dict()
+    configuration["splunk_server"]["install_es"] = "1"
+    configuration["splunk_server"]["splunk_es_app"] = "splunk-enterprise-security_732.spl"
+
+    configuration["windows_servers"] = list()
+    configuration["windows_servers"].append(
         {
-            "type": "confirm",
-            "message": "shall we build a linux server",
-            "name": "linux_server",
-            "default": False,
-        },
+            "hostname": "DC",
+            "windows_image": "windows-server-2019",
+            "create_domain": "1"
+        }
+    )
+    configuration["windows_servers"].append(
         {
-            "type": "confirm",
-            "message": "shall we build a kali linux machine",
-            "name": "kali_machine",
-            "default": False,
-            "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
-        },
+            "hostname": "ITSERVER",
+            "windows_image": "windows-server-2019",
+            "create_domain": "1"
+        }
+    )
+    configuration["windows_servers"].append(
         {
-            "type": "confirm",
-            "message": "shall we build nginx plus web proxy",
-            "name": "nginx_web_proxy",
-            "default": False,
-            "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
-        },
-        {
-            "type": "confirm",
-            "message": "shall we build zeek server",
-            "name": "zeek_server",
-            "default": False,
-            "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
-        },
-        {
-            "type": "confirm",
-            "message": "shall we build snort server",
-            "name": "snort_server",
-            "default": False,
-            "when": lambda answers: configuration["general"]["cloud_provider"] == "aws",
-        },
-        {
-            "type": "confirm",
-            "message": "shall we include Splunk SOAR",
-            "name": "phantom",
-            "default": False,
-        },
-        {
-            "type": "text",
-            "message": "Download the Splunk SOAR unpriv installer and save it in the apps folder. What is the name of the file?",
-            "name": "phantom_installer",
-            "when": lambda answers: answers["phantom"],
-        },
-    ]
+            "hostname": "FINSERVER",
+            "windows_image": "windows-server-2019",
+            "join_domain": "1"
+        }
+    )
+    configuration["kali_server"] = dict()
+    configuration["kali_server"]["kali_server"] = "1"
 
-    answers = questionary.prompt(questions)
-
-    if answers["linux_server"]:
-        configuration["linux_servers"] = list()
-        configuration["linux_servers"].append(
-            {
-                "hostname": "ar-linux",
-            }
-        )
-
-    if configuration["general"]["cloud_provider"] == "aws":
-        if answers["kali_machine"]:
-            configuration["kali_server"] = dict()
-            configuration["kali_server"]["kali_server"] = "1"
-
-        if answers["nginx_web_proxy"]:
-            configuration["nginx_server"] = dict()
-            configuration["nginx_server"]["nginx_server"] = "1"
-
-        if answers["zeek_server"]:
-            configuration["zeek_server"] = dict()
-            configuration["zeek_server"]["zeek_server"] = "1"
-
-        if answers["snort_server"]:
-            configuration["snort_server"] = dict()
-            configuration["snort_server"]["snort_server"] = "1"
-
-    if answers["phantom"]:
-        configuration["phantom_server"] = dict()
-        configuration["phantom_server"]["phantom_server"] = "1"
-
-    if "phantom_installer" in answers:
-        configuration["phantom_server"]["phantom_app"] = answers["phantom_installer"]
 
     # write config file
     with open(attack_range_config, "w") as outfile:
