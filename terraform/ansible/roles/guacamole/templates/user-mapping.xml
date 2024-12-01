@@ -1,10 +1,10 @@
 <user-mapping>
-    <authorize 
+    <authorize
             username="admin"
             password="{{general.attack_range_password|hash('md5')}}"
             encoding="md5">
 
-        <connection name="ar-splunk-{{ general.key_name }}-{{ general.attack_range_name }}">
+        <connection name="SPLUNK-SSH">
             <protocol>ssh</protocol>
             <param name="hostname">localhost</param>
             <param name="port">22</param>
@@ -14,7 +14,7 @@
             {% elif general.cloud_provider == 'azure' %}
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
-        </connection>        
+        </connection>
 
         {% if phantom_server.phantom_server == '1' %}
         <connection name="ar-phantom-{{ general.key_name }}-{{ general.attack_range_name }}">
@@ -27,40 +27,30 @@
             {% elif general.cloud_provider == 'azure' %}
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
-        </connection>    
+        </connection>
         {% endif %}
-        
-        <connection name="DC-RDP">
-            <protocol>rdp</protocol>
-            <param name="hostname">10.0.1.14</param>
-            <param name="port">3389</param>
-            <param name="username">Administrator</param>
-            <param name="password">{{general.attack_range_password}}</param>
-            <param name="ignore-cert">true</param>
-            <param name="enable-drive">true</param>
-            <param name="drive-path">/home/ubuntu/shared-folder</param>
-        </connection>
-        <connection name="ITSERVER-RDP">
-            <protocol>rdp</protocol>
-            <param name="hostname">10.0.1.15</param>
-            <param name="port">3389</param>
-            <param name="username">Administrator</param>
-            <param name="password">{{general.attack_range_password}}</param>
-            <param name="ignore-cert">true</param>
-            <param name="enable-drive">true</param>
-            <param name="drive-path">/home/ubuntu/shared-folder</param>
-        </connection>
-        <connection name="FINSERVER-RDP">
-            <protocol>rdp</protocol>
-            <param name="hostname">10.0.1.16</param>
-            <param name="port">3389</param>
-            <param name="username">Administrator</param>
-            <param name="password">{{general.attack_range_password}}</param>
-            <param name="ignore-cert">true</param>
-            <param name="enable-drive">true</param>
-            <param name="drive-path">/home/ubuntu/shared-folder</param>
-        </connection>
 
+        {% if windows_servers is string %}
+            {% set windows_servers_list = windows_servers|from_json %}
+        {% else %}
+            {% set windows_servers_list = windows_servers %}
+        {% endif %}
+        {% for server in windows_servers_list %}
+        <connection name="{{ server.hostname }}-RDP">
+            <protocol>rdp</protocol>
+            <param name="hostname">10.0.1.{{loop.index-1+14}}</param>
+            <param name="port">3389</param>
+             {% if general.cloud_provider == 'azure' %}
+            <param name="username">AzureAdmin</param>
+            {% else %}
+            <param name="username">Administrator</param>
+            {% endif %}
+            <param name="password">{{general.attack_range_password}}</param>
+            <param name="ignore-cert">true</param>
+            <param name="enable-drive">true</param>
+            <param name="drive-path">/home/ubuntu/shared-folder</param>
+        </connection>
+        {% endfor %}
 
         {% if linux_servers is string %}
             {% set linux_servers_list = linux_servers|from_json %}
@@ -93,7 +83,7 @@
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
         </connection>
-        <connection name="KALI-VNC"
+        <connection name="KALI-VNC">
             <protocol>vnc</protocol>
             <param name="hostname">10.0.1.30</param>
             <param name="port">5901</param>
@@ -113,7 +103,7 @@
             {% elif general.cloud_provider == 'azure' %}
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
-        </connection>    
+        </connection>
         {% endif %}
 
         {% if snort_server.snort_server == '1' %}
@@ -127,7 +117,7 @@
             {% elif general.cloud_provider == 'azure' %}
             <param name="private-key">{{ lookup('file', azure.private_key_path) }}</param>
             {% endif %}
-        </connection>    
+        </connection>
         {% endif %}
 
     </authorize>
