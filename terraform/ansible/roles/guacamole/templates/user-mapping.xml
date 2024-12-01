@@ -30,28 +30,6 @@
         </connection>    
         {% endif %}
         
-        <!-- {% if windows_servers is string %}
-            {% set windows_servers_list = windows_servers|from_json %}
-        {% else %}
-            {% set windows_servers_list = windows_servers %}
-        {% endif %}
-        {% for server in windows_servers_list %}
-        <connection name="ar-win-{{ general.key_name }}-{{ general.attack_range_name }}-{{ loop.index-1 }}">
-            <protocol>rdp</protocol>
-            <param name="hostname">10.0.1.{{loop.index-1+14}}</param>
-            <param name="port">3389</param>
-             {% if general.cloud_provider == 'azure' %}
-            <param name="username">AzureAdmin</param>
-            {% else %}
-            <param name="username">Administrator</param>
-            {% endif %}
-            <param name="password">{{general.attack_range_password}}</param>
-            <param name="ignore-cert">true</param>
-            <param name="enable-drive">true</param>
-            <param name="drive-path">/home/ubuntu/shared-folder</param>
-        </connection>
-        {% endfor %} -->
-
         <connection name="DC-RDP">
             <protocol>rdp</protocol>
             <param name="hostname">10.0.1.14</param>
