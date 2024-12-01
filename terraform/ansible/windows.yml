@@ -24,3 +24,4 @@
     - carbon_black_cloud_agent_win
     - populate_ad
     - windows_setup_privesc
+    - finance_db
