@@ -45,6 +45,10 @@
     status_code: [ 200, 201 ]
     timeout: 120
 
+- name: Pause for 1 min
+  ansible.builtin.pause:
+    minutes: 1
+
 - name: restart splunk
   service: name=splunk state=restarted
   become: yes
