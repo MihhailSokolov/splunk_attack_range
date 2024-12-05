@@ -145,7 +145,7 @@ $acl.AddAccessRule($accessrule)
 Set-Acl -AclObject $acl -Path $path
 
 $action = New-ScheduledTaskAction -Execute "powershell" -Argument "-WindowStyle Hidden -File C:\Windows\Temp\set-da-dacl.ps1 $domain $username $userpwd"
-$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date -RepetitionInterval (New-TimeSpan -Minutes 60)
+$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).Date -RepetitionInterval (New-TimeSpan -Minutes 5)
 $settings = New-ScheduledTaskSettingsSet
 Register-ScheduledTask -TaskName SetDADacl -TaskPath "\" -Action $action -Trigger $trigger -User $username -Password $userpwd -Settings $settings
 
