@@ -1,0 +1,3 @@
+
+- include: windows_advanced_auditing.yml
+  when: windows_servers.join_domain == "1"

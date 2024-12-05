@@ -1,0 +1,16 @@
+---
+
+- name: Copy setup privesc script to host
+  win_copy:
+    src: "setup_auditing.ps1"
+    dest: 'C:\Windows\Temp\setup_auditing.ps1'
+
+- name: Run setup privesc
+  win_shell: "C:\\Windows\\Temp\\setup_auditing.ps1"
+  register: win_shell_output
+  retries: 10
+  delay: 60
+  until: win_shell_output.stderr == ""
+
+- debug:
+    var: win_shell_output
