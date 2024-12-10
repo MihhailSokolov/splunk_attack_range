@@ -6,7 +6,7 @@
     dest: 'C:\emulation.md'
 
 - name: Give everyone access to emulation.md
-  win_shell: "icacls "C:\\MyFolder" /grant Users:F"
+  win_shell: "icacls C:\\emulation.md /grant Users:F"
   register: win_shell_output
   retries: 5
   delay: 300
